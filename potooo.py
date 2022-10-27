@@ -73,12 +73,16 @@ contador = 5 # Aumenta con los cambios de variables
 hit = 0
 miss = 0
 contadorv2 = 0 # Sirve para guiar donde se realizará el cambio cuando no se encuentre la variable en memoria
+mostrar_hit = 0
 
 for i in secuencia:
     
     print("\n\nSecuencia",secuencia)
     print("\nOrden reemplazo",orden_prioridad)
     print("\nMemoria",orden_cambio_LRU)
+    if (mostrar_hit == 1):
+        print("\nHIT:", j, "con", j)
+        mostrar_hit = 0
 
     # En caso de que se encuentre la variable en memoria
     for j in orden_cambio_LRU:
@@ -126,8 +130,9 @@ for i in secuencia:
                 #print(orden_prioridad)
                 break
             contadoraux = contadoraux+1
+            mostrar_hit = 1
             
-        print("\nHIT:", i, "con", j)
+        #print("\nHIT:", i, "con", j)
     #print("FUNCIONAAAAAAAAAAAAAAAAAAAAAAAAAAa")
     
 print("\nHIT con LRU: ", hit)
