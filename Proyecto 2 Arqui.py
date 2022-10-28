@@ -2,15 +2,14 @@ import random
 #Implementar FIFO, LRU y CLOCK, comparar su eficiencia, calculando la cantidad de HIT y MISS, asumir tamaños de paginas, largo de la secuencia y la cantidad de memoria
 #El ultimo valor de la secuencia no se toma en cuenta
 
+# Cada proceso ocupa 1 mega de espacio. Por cada miss se descuenta 1 mega
+
 #Definir variables
 
-cantidad_memoria = 128
-tamaño_paginas = 4
+tamaño_paginas = 4 # No es modificable
 secuencia = []
 tamaño_secuencia = 15 # El tamaño de la secuencia puede ser variable, pero por defecto se dejará en 15
-hit = 0
-miss = 0
-
+memoria_total = 16 # Se representa en MB de memoria
 
 contador = 0
 while (contador < tamaño_secuencia): # Se le asignan valores random a la secuencia
@@ -24,7 +23,10 @@ print("\n\n################# FIFO #################")
 orden_cambio_FIFO = [0, 0, 0, 0] # Páginas en las que se trabajará
 hit_miss = 0 # Sirve para ver si hay HIT o MISS
 contador = 0 
+hit_FIFO = 0
+miss_FIFO = 0
 mostrar_hit = 0
+memoria_FIFO = memoria_total
 
 for i in secuencia:
 
@@ -41,20 +43,25 @@ for i in secuencia:
             
     if (hit_miss == 1): # Simplemente se le suma +1 a HIT y pasa al siguiente valor del arreglo
         #print("\nHIT", i, "con", j)
-        hit = hit+1
+        hit_FIFO = hit_FIFO+1
         hit_miss = 0
         mostrar_hit = 1
 
     elif (hit_miss == 0): # Se le suma +1 a MISS y procede a hacer el reemplazo correspondiente en la pagina que toca, la cual es representada por "contador"
-        miss = miss+1
+        miss_FIFO = miss_FIFO+1
         orden_cambio_FIFO[contador] = i
         contador = contador + 1
         if (contador == 4):
             contador = 0
+        memoria_FIFO = memoria_FIFO-1
 
-print("\nHIT con FIFO: ", hit)
-print("MISS con FIFO: ",miss)
+    if (memoria_FIFO == 0):
+        print("\n###### Error en FIFO, falta Memoria ######")
+        break
 
+print("\nHIT con FIFO: ", hit_FIFO)
+print("MISS con FIFO: ",miss_FIFO)
+print("Total de memoria al final de FIFO =", memoria_FIFO)
 
 # LRU #
 # Se pensó de la siguiente forma: 
@@ -68,10 +75,11 @@ orden_cambio_LRU = [0, 0, 0, 0] # Se guarda el cambio de las variables
 orden_prioridad = [1, 2, 3, 4] # Se guarda el orden de cambio de las variables
 hit_miss = 0 
 contador = 5 # Aumenta con los cambios de variables
-hit = 0
-miss = 0
+hit_LRU = 0
+miss_LRU = 0
 contadorv2 = 0 # Sirve para guiar donde se realizará el cambio cuando no se encuentre la variable en memoria
 mostrar_hit = 0
+memoria_LRU = memoria_total
 
 for i in secuencia:
     
@@ -91,7 +99,7 @@ for i in secuencia:
 
     # En caso de que no se encuentre la variable en memoria
     if (hit_miss == 0):
-        miss = miss+1
+        miss_LRU = miss_LRU+1
         reemplazo = min(orden_prioridad, key=int)  # Se busca el valor más bajo de orden_prioridad
         contadorv2 = 0
         
@@ -104,9 +112,10 @@ for i in secuencia:
 
             contadorv2 = contadorv2+1
         orden_cambio_LRU[contadorv2] = i
+        memoria_LRU = memoria_LRU-1
     
     elif (hit_miss == 1): # Se encuentra la variable en memoria
-        hit = hit+1
+        hit_LRU = hit_LRU+1
         hit_miss = 0
         reemplazo = min(orden_prioridad, key=int)
         contadoraux = 0
@@ -115,12 +124,17 @@ for i in secuencia:
             if (a == i):
                 orden_prioridad[contadoraux] = contador
                 contador = contador+1
+                mostrar_hit = 1
                 break
             contadoraux = contadoraux+1
-            mostrar_hit = 1
             
-print("\nHIT con LRU: ", hit)
-print("MISS con LRU: ",miss)
+    if (memoria_LRU == 0):
+        print("\n###### Error en LRU, falta Memoria ######")
+        break
+
+print("\nHIT con LRU: ", hit_LRU)
+print("MISS con LRU: ",miss_LRU)
+print("Total de memoria al final de LRU =", memoria_LRU)
 
 
 # CLOCK #
@@ -135,9 +149,10 @@ bit_modificado = [0, 0, 0, 0] # Se utiliza prar llevar un orden del reemplazo
 orden_cambio_CLOCK = [0, 0, 0, 0]
 hit_miss = 0 
 puntero = 0 # Es como un contador 
-hit = 0
-miss = 0
+hit_CLOCK = 0
+miss_CLOCK = 0
 mostrar_hit = 0
+memoria_CLOCK = memoria_total
 
 for i in secuencia:
 
@@ -155,7 +170,7 @@ for i in secuencia:
             break
             
     if (hit_miss == 1):
-        hit = hit+1
+        hit_CLOCK = hit_CLOCK+1
         hit_miss = 0
         mostrar_hit = 1
         buscar_ubicacion_reemplazo1 = 0
@@ -166,7 +181,7 @@ for i in secuencia:
             buscar_ubicacion_reemplazo1 = buscar_ubicacion_reemplazo1 +1
 
     elif (hit_miss == 0):
-        miss = miss+1
+        miss_CLOCK = miss_CLOCK+1
         validar = True
         while (validar == True): # Al momento de intentar realizar un reemplazo, se busca una ubicación que tenga su bit de modificado = 0 para poder realizar el reemplazo
 
@@ -183,6 +198,19 @@ for i in secuencia:
         puntero = puntero + 1
         if (puntero == 4):
             puntero = 0
-    
-print("HIT con CLOCK: ", hit)
-print("MISS con CLOCK: ",miss)
+        memoria_CLOCK = memoria_CLOCK-1
+
+    if (memoria_CLOCK == 0):
+        print("\n###### Error en CLOCK, falta Memoria ######")
+        break
+
+print("\nHIT con CLOCK: ", hit_CLOCK)
+print("MISS con CLOCK: ",miss_CLOCK)
+print("Total de memoria al final de CLOCK =", memoria_CLOCK)
+
+###### Mostrar resultador finales ######
+print ("\n\n\n######## Conclusiones ########")
+
+print("\n##FIFO##\nHIT:", hit_FIFO, "\nMISS:", miss_FIFO, "\nMemoria Total:", memoria_FIFO)
+print("\n##LRU:##\nHIT", hit_LRU, "\nMISS:", miss_LRU, "\nMemoria Total:", memoria_LRU)
+print("\n##CLOCK##\nHIT", hit_CLOCK, "\nMISS:", miss_CLOCK, "\nMemoria Total:", memoria_CLOCK)
