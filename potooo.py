@@ -10,6 +10,7 @@ secuencia = []
 tamaño_secuencia = 15
 hit = 0
 miss = 0
+
 #El tamaño de la secuencia será de 15 caracteres y serán random
 
 #Asignar valores del arrelo
@@ -19,13 +20,10 @@ while (contador < tamaño_secuencia):
     secuencia.append(random.randint(1,8))
     contador = contador+1
 
-#print(secuencia, "\n\n")
 
 # FIFO #
 print("\n\n################# FIFO #################")
 
-
-print("### FIFO ###")
 orden_cambio_FIFO = [0, 0, 0, 0]
 hit_miss = 0 
 contador = 0
@@ -35,8 +33,6 @@ for i in secuencia:
     print("\n\nSecuencia",secuencia)
     print("\nMemoria",orden_cambio_FIFO)
 
-    #print(orden_cambio_FIFO)
-    #print(i)
     for j in orden_cambio_FIFO:
         if (i == j):
             hit_miss = 1
@@ -44,7 +40,6 @@ for i in secuencia:
             
     if (hit_miss == 1):
         print("\nHIT", i, "con", j)
-        #print(i, "con ", j)
         hit = hit+1
         hit_miss = 0
 
@@ -57,6 +52,7 @@ for i in secuencia:
 
 print("\nHIT con FIFO: ", hit)
 print("MISS con FIFO: ",miss)
+
 
 # LRU #
 # Se pensó de la siguiente forma: 
@@ -93,48 +89,34 @@ for i in secuencia:
 
     # En caso de que no se encuentre la variable en memoria
     if (hit_miss == 0):
-        #print(i, "con", j)
         miss = miss+1
-        #hit_miss = 0
         reemplazo = min(orden_prioridad, key=int)  # Se busca el valor más bajo de orden_prioridad
-        #print("reemplazo:", reemplazo, "\n")
         contadorv2 = 0
         
         for h in orden_prioridad: # Se busca la ubicación del elemento más pequeño de orden_prioridad
             if (h == reemplazo):
-                #print("\ncontador 2:", contadorv2)
                 reemplazo2 = orden_prioridad[contadorv2]
                 orden_prioridad[contadorv2] = contador
                 contador = contador+1
-                #print(orden_prioridad)
                 break
 
             contadorv2 = contadorv2+1
-        #print("contadorrrrrrr: ",contadorv2  )
         orden_cambio_LRU[contadorv2] = i # 
-        #print(orden_cambio_LRU)
-
     
     elif (hit_miss == 1):
         hit = hit+1
         hit_miss = 0
         reemplazo = min(orden_prioridad, key=int)
         contadoraux = 0
-        #print("\nfuncionaaaaaaa")
-        #print("reemplazo:", reemplazo, "\n")
 
         for a in orden_cambio_LRU:
             if (a == i):
                 orden_prioridad[contadoraux] = contador
                 contador = contador+1
-                #print(orden_prioridad)
                 break
             contadoraux = contadoraux+1
             mostrar_hit = 1
             
-        #print("\nHIT:", i, "con", j)
-    #print("FUNCIONAAAAAAAAAAAAAAAAAAAAAAAAAAa")
-    
 print("\nHIT con LRU: ", hit)
 print("MISS con LRU: ",miss)
 
@@ -147,6 +129,53 @@ print("MISS con LRU: ",miss)
 
 print("\n\n################# CLOCK #################")
 
+bit_modificado = [0, 0, 0, 0]
+orden_cambio_CLOCK = [0, 0, 0, 0]
+hit_miss = 0 
+puntero = 0
+hit = 0
+miss = 0
+poto = True
+mostrar_hit = 0
 
+for i in secuencia:
+
+    print("\n\nSecuencia", secuencia)
+    print("\nMemoria", orden_cambio_CLOCK)
+    print("\nBit de modificado", bit_modificado)
+    if (mostrar_hit == 1):
+        print("\nHIT:", j, "con", j)
+        mostrar_hit = 0
+    
+    for j in orden_cambio_CLOCK:
+        if (i == j):
+            hit_miss = 1
+            break
+            
+    if (hit_miss == 1):
+        hit = hit+1
+        hit_miss = 0
+        mostrar_hit = 1
+
+    elif (hit_miss == 0):
+        miss = miss+1
+        validar = True
+        while (validar == True):
+
+            if (bit_modificado[puntero] == 0):
+                print("uwu")
+                orden_cambio_CLOCK[puntero] = i
+                bit_modificado[puntero] = 1
+                validar = False
+            else:
+                bit_modificado[puntero] = 0
+                puntero = puntero+1
+                if (puntero == 4):
+                    puntero = 0
+
+        puntero = puntero + 1
+        if (puntero == 4):
+            puntero = 0
+    
 print("HIT con CLOCK: ", hit)
 print("MISS con CLOCK: ",miss)
