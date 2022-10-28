@@ -160,7 +160,7 @@ for i in secuencia:
         hit_miss = 0
         mostrar_hit = 1
         buscar_ubicacion_reemplazo1 = 0
-        for h in orden_cambio_CLOCK:
+        for h in orden_cambio_CLOCK: # Cuando se realiza un HIT, se asigna un 1 en la ubicación donde se realizó un HIT, para así, darle una segunda oportunidad
             if (h == i):
                 bit_modificado[buscar_ubicacion_reemplazo1] = 1
                 break
@@ -169,13 +169,13 @@ for i in secuencia:
     elif (hit_miss == 0):
         miss = miss+1
         validar = True
-        while (validar == True):
+        while (validar == True): # Al momento de intentar realizar un reemplazo, se busca una ubicación que tenga su bit de modificado = 0 para poder realizar el reemplazo
 
             if (bit_modificado[puntero] == 0):
                 orden_cambio_CLOCK[puntero] = i
                 bit_modificado[puntero] = 1
                 validar = False
-            else:
+            else: # En el caso de que el bit de modificado al que apunte el puntero sea 1, se deja en 0 y se pasa a la siguiente página
                 bit_modificado[puntero] = 0
                 puntero = puntero+1
                 if (puntero == 4):
