@@ -10,7 +10,6 @@ secuencia = []
 tamaño_secuencia = 15
 hit = 0
 miss = 0
-mostrar_hit = 0
 
 #El tamaño de la secuencia será de 15 caracteres y serán random
 
@@ -26,6 +25,7 @@ print("\n\n################# FIFO #################")
 orden_cambio_FIFO = [0, 0, 0, 0] # Páginas en las que se trabajará
 hit_miss = 0 # Sirve para ver si hay HIT o MISS
 contador = 0 
+mostrar_hit = 0
 
 for i in secuencia:
 
@@ -72,6 +72,7 @@ contador = 5 # Aumenta con los cambios de variables
 hit = 0
 miss = 0
 contadorv2 = 0 # Sirve para guiar donde se realizará el cambio cuando no se encuentre la variable en memoria
+mostrar_hit = 0
 
 for i in secuencia:
     
@@ -137,6 +138,7 @@ hit_miss = 0
 puntero = 0 # Es como un contador 
 hit = 0
 miss = 0
+mostrar_hit = 0
 
 for i in secuencia:
 
