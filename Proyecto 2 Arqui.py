@@ -7,11 +7,10 @@ import random
 cantidad_memoria = 128
 tamaño_paginas = 4
 secuencia = []
-tamaño_secuencia = 15
+tamaño_secuencia = 15 # El tamaño de la secuencia puede ser variable, pero por defecto se dejará en 15
 hit = 0
 miss = 0
 
-#El tamaño de la secuencia será de 15 caracteres y serán random
 
 contador = 0
 while (contador < tamaño_secuencia): # Se le asignan valores random a la secuencia
