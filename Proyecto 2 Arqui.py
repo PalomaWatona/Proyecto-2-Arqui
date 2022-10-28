@@ -6,10 +6,9 @@ import random
 
 #Definir variables
 
-tamaño_paginas = 4 # No es modificable
 secuencia = []
 tamaño_secuencia = 15 # El tamaño de la secuencia puede ser variable, pero por defecto se dejará en 15
-memoria_total = 16 # Se representa en MB de memoria
+memoria_total = 20 # Se representa en MB de memoria
 
 contador = 0
 while (contador < tamaño_secuencia): # Se le asignan valores random a la secuencia
